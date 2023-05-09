@@ -1,21 +1,27 @@
 // Slider that updates the visualisation
-var slider = d3
-    .sliderHorizontal()
-    .min(1)
-    .max(3)
-    .step(1)
-    .ticks(2)
-    .tickFormat(d3.format(',.0f'))
-    .width(450)
-    .displayValue(false)
-    .on('onchange', (val) => {
-        updateVisualisation(val)
-    });
+function slider() {
 
-// d3.select('#slider>svg')
-//     .append('g')
-//     .attr('transform', 'translate(30,30)')
-//     .call(slider);
+    let margin = 15,
+        width = document.querySelector('#slider-svg').clientWidth
+
+    let slider =
+        d3.sliderHorizontal()
+            .min(1)
+            .max(3)
+            .step(1)
+            .ticks(2)
+            .tickFormat(d3.format(',.0f'))
+            .width(width - 2 * margin)
+            .displayValue(false)
+            .on('onchange', (val) => {
+                updateVisualisation(val)
+            });
+
+    d3.select('#slider>svg')
+        .append('g')
+        .attr('transform', `translate(${margin},30)`)
+        .call(slider);
+}
 
 // Data generator
 function randomXY(n, width, height, scale) {
@@ -199,7 +205,7 @@ function visualisation_2(svg) {
 
     function barGrower() {
 
-        let yScale = d3.scaleLinear().domain([0, height]).range([height, 0])
+        let yScale = d3.scaleLinear().domain([0, d3.max(data2.map(d=>d.y))]).range([height, 0])
 
         svg.select('#vbars')
             .selectAll('rect')
@@ -232,7 +238,7 @@ function visualisation_2(svg) {
             .attr('width', () => 0)
             .on('end', callback)
 
-            svg.select('#hbars-xscale')
+        svg.select('#hbars-xscale')
             .transition()
             .duration(500)
             .attr("transform", `translate(${margin},${height + 2 * margin})`)
@@ -255,7 +261,6 @@ function visualisation_3(svg) {
     let data = randomXY(50, width, height, 5),
         data2 = [{ x: 1, y: 150 }, { x: 2, y: 250 }, { x: 3, y: 250 }, { x: 4, y: 350 }, { x: 5, y: 250 }, { x: 6, y: 250 }, { x: 7, y: 250 }, { x: 8, y: 250 }],
         ngroups = data2.length,
-
         needs_initial_g = d3.select('g#hbars').empty(),
         currentViz = svg.attr('viz')
 
@@ -279,8 +284,8 @@ function visualisation_3(svg) {
 
     function barInitialiser() {
 
-        let xScale = d3.scaleLinear().domain([0, width]).range([0, width]),
-            yScale = d3.scaleBand().domain(data2.map(d => d.x)).range([0, width]).padding(0.4)
+        let xScale = d3.scaleLinear().domain([0, d3.max(data2.map(d => d.y))]).range([0, width]),
+            yScale = d3.scaleBand().domain(data2.map(d => d.x)).range([0, height]).padding(0.4)
 
         svg.append('g')
             .attr("id", 'hbars')
@@ -288,8 +293,8 @@ function visualisation_3(svg) {
             .data(data2)
             .enter()
             .append("rect")
-            .attr("x", (d) => xScale(0))
-            .attr("width", d => xScale(0))
+            .attr("x", () => 0)
+            .attr("width", () => 0)
             .attr("y", (d) => yScale(d.x))
             .attr("height", yScale.bandwidth())
             .attr('transform', `translate(${margin}, ${margin})`)
@@ -335,9 +340,9 @@ function visualisation_3(svg) {
 
     function circlePositioner(callback) {
 
-        let xScale = d3.scaleLinear().domain([0, width]).range([0, width]),
-            yScale = d3.scaleBand().domain(data2.map(d => d.x)).range([0, width]).padding(0.4)
-        yScaleBandwith = yScale.bandwidth()
+        let xScale = d3.scaleLinear().domain([0, d3.max(data2.map(d => d.y))]).range([0, width]),
+            yScale = d3.scaleBand().domain(data2.map(d => d.x)).range([0, height]).padding(0.4),
+            yScaleBandwith = yScale.bandwidth()
 
         svg.selectAll("circle")
             .data(data)
@@ -349,16 +354,15 @@ function visualisation_3(svg) {
             .style('fill', 'blue')
             .transition()
             .duration(500)
-            .attr("cx", d => xScale(-(yScaleBandwith / 2) - margin))
+            .attr("cx", d => xScale(-(yScaleBandwith/2)-2*margin))
             .attr("r", yScaleBandwith / 2)
             .on('end', callback)
     }
 
-
     function barGrower() {
 
-        let xScale = d3.scaleLinear().domain([0, width]).range([0, width]),
-            yScale = d3.scaleBand().domain(data2.map(d => d.x)).range([0, width]).padding(0.4)
+        let xScale = d3.scaleLinear().domain([0, d3.max(data2.map(d => d.y))]).range([0, width]),
+            yScale = d3.scaleBand().domain(data2.map(d => d.x)).range([0, height]).padding(0.4)
 
         svg.select('g#hbars')
             .selectAll("rect")
@@ -369,7 +373,7 @@ function visualisation_3(svg) {
             .attr('fill', 'blue')
             .transition()
             .duration(500)
-            .attr("width", d => width - xScale(d.y))
+            .attr("width", d => xScale(d.y))
 
         svg.select('#hbars-xscale')
             .transition()

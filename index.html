@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" href="styles.css">
     <script src="d3.min.js"></script>
     <script src="d3-simple-slider.min.js"></script>
@@ -13,21 +14,33 @@
 </head>
 
 <body>
-    <p id="text"></p>
-    <div id="dataviz" style=>
-        <svg></svg>
+
+    <div style="w3-container">
+        <p id="text"></p>
     </div>
 
-    <div id="slider">
-        <svg></svg>
+    <div class="w3-container">
+        <div id="dataviz">
+            <svg id="dataviz-svg"></svg>
+        </div>
     </div>
+
+    <div class="w3-container">
+        <div id="slider">
+            <svg id="slider-svg"></svg>
+        </div>
+    </div>
+
+
+   
+
+    
 
     <script>
 
-        d3.select('#slider>svg')
-            .append('g')
-            .attr('transform', 'translate(30,30)')
-            .call(slider);
+        slider();
+
+
 
         updateVisualisation(1)
 
@@ -38,8 +51,8 @@
 
             svg.attrs = {
                 margin: margin,
-                width: document.querySelector('svg').clientWidth - 2 * margin,
-                height: document.querySelector('svg').clientHeight - 2 * margin
+                width: document.querySelector('#dataviz-svg').clientWidth - 2 * margin,
+                height: document.querySelector('#dataviz-svg').clientHeight - 2 * margin
             }
 
             // Initialise
@@ -47,13 +60,13 @@
                 visualisation_1(svg)
             }
 
-            if (index == 2) {              
+            if (index == 2) {
                 visualisation_2(svg)
             }
 
             if (index == 3) {
                 visualisation_3(svg)
-                
+
             }
 
         }

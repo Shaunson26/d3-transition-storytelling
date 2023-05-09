@@ -6,9 +6,8 @@
 #dataviz {
     border: 1px solid black;
     height: 500px;
-    width: 500px;
-    max-width: 100%;
-    margin: 16px;
+    width: 100%;
+    max-width: 500px;
 }
 
 #dataviz > svg {
@@ -17,10 +16,10 @@
 }
 
 #slider {
+    border: 1px solid black;
     height: 100px;
-    width: 500px;
-    max-width: 100%;
-    margin: 16px;
+    max-width: 500px;
+    width: 100%;
 }
 
 #slider > svg {
