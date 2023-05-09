@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="d3.min.js"></script>
+    <script src="d3-simple-slider.min.js"></script>
+    <script src="script.js"></script>
+    <title>A visualisation story</title>
+</head>
+
+<body>
+    <p id="text"></p>
+    <div id="dataviz" style=>
+        <svg></svg>
+    </div>
+
+    <div id="slider">
+        <svg></svg>
+    </div>
+
+    <script>
+
+        d3.select('#slider>svg')
+            .append('g')
+            .attr('transform', 'translate(30,30)')
+            .call(slider);
+
+        updateVisualisation(1)
+
+        function updateVisualisation(index) {
+
+            let svg = d3.select("#dataviz>svg")
+            let margin = 30
+
+            svg.attrs = {
+                margin: margin,
+                width: document.querySelector('svg').clientWidth - 2 * margin,
+                height: document.querySelector('svg').clientHeight - 2 * margin
+            }
+
+            // Initialise
+            if (index == 1) {
+                visualisation_1(svg)
+            }
+
+            if (index == 2) {              
+                visualisation_2(svg)
+            }
+
+            if (index == 3) {
+                visualisation_3(svg)
+                
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
